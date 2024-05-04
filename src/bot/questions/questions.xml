@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questionTree>
+    <Question>
+        <question>Чему посвящен праздник «Сабантуй»?</question> 
+        <bad_answer>Началу покоса</bad_answer>
+        <bad_answer>Дню рождения председателя сельсовет</bad_answer>   
+        <good_answer>Окончанию весенних полевых работ</good_answer>
+    </Question>
+    <Question>
+        <question>Как переводится «Сабантуй»?</question> 
+        <bad_answer>Солнечный день</bad_answer>   
+        <bad_answer>Радость пахоты</bad_answer>
+        <good_answer>Празднество (праздник) плуга</good_answer>
+    </Question>
+</questionTree>
