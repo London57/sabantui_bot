@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from parse_questions import get_xml_data
+from .parse_questions import get_xml_data
 
 @dataclass
 class Question:
