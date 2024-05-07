@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
+from random import shuffle
 
-def get_xml_data(result_list = []):
+def get_quetions(result_list = []):
+    print(__file__)
     tree = ET.parse('questions.xml')
     root = tree.getroot()
     questions = root.findall('Question')
@@ -15,3 +17,7 @@ def get_xml_data(result_list = []):
             }
             )
     return result_list
+
+
+Questions = get_quetions()
+shuffle(Questions)
