@@ -12,4 +12,22 @@
         <bad_answer>Радость пахоты</bad_answer>
         <good_answer>Празднество (праздник) плуга</good_answer>
     </Question>
+    <Question>
+        <question>На Сабантуе батыры “тягают гирю”, это тоже достаточно традиционный спорт. А какой вес у среднестатистической “сабантуйской” гири?</question> 
+        <bad_answer>16 кг</bad_answer>   
+        <bad_answer>64 кг</bad_answer>
+        <good_answer>32 кг</good_answer>
+    </Question>
+    <Question>
+        <question>Какой вид спорта как национальный вошел из Сабантуя в состав игр Всемирной Летней Универсиады 2013 года?</question> 
+        <bad_answer>Бег с яйцом во рту</bad_answer>   
+        <bad_answer>Бег в мешках</bad_answer>
+        <good_answer>Борьба на поясах</good_answer>
+    </Question>
+    <Question>
+        <question>Что должен нащупать ртом игрок, которого окунают лицом в катык?</question> 
+        <bad_answer>Яйцо</bad_answer>   
+        <bad_answer>Кусок чак-чака</bad_answer>
+        <good_answer>Монету</good_answer>
+    </Question>
 </questionTree>

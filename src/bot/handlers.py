@@ -2,10 +2,11 @@ from aiogram import Dispatcher, F
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import CommandStart, Command, StateFilter, and_f
 from aiogram.types import Message
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardRemove
 from .quizLogic.quetionList import QuestionList
 from .state import States
 from .keyboards import get_quiz_kbd
+from .quizLogic.checkRightAnswer import checkRightAnswer
 
 
 dp = Dispatcher()
@@ -19,24 +20,22 @@ async def start(message: Message):
 async def start_quiz(message: Message, state: FSMContext):
     global questionList
     questionList = QuestionList()
-
     await state.set_state(States.Quiz)
-    question = questionList.next()
-    await message.answer(
-        question['question'],
-        reply_markup=get_quiz_kbd(question)
-    )
+    await quiz(message, state)
 
 @dp.message(and_f(StateFilter(States.Quiz), F.text))
 async def quiz(message: Message, state: FSMContext):
-    question = questionList.next()
+    question, questionBefore = questionList.next()
+    if questionList.tail.index > 0:
+        print(checkRightAnswer(message, questionBefore, questionList))
     if question:
         await message.answer(
             question['question'],
             reply_markup=get_quiz_kbd(question),
         )
     else:
-        await state.clear()
-        await message.answer('Вы успешно прошли квиз!')
-        return
-    # ЕЩЁ НУЖНО УДАЛИТЬ ОБЪЕКТ questionList!!!
+        await end_quiz(message, state)
+
+async def end_quiz(message: Message, state: FSMContext):
+    await message.answer('Вы успешно прошли квиз!', reply_markup=ReplyKeyboardRemove())
+    await state.clear()
