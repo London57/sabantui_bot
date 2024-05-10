@@ -4,7 +4,7 @@ from .questions.parse_questions import Questions
 
 class QuestionList(QuestionNodeList):
     # эту функцию можно было написать и в базовом классе.
-    def next(self, *values, **kw_values):
+    def next(self):
         # если в QuestionNodeList есть вопросы и следующего впороса нет, то выходим
         if self.head and self.tail.index == len(Questions) - 1:
             return False
@@ -34,5 +34,13 @@ class QuestionList(QuestionNodeList):
                 'bad_answers': Questions[self.tail.index-1]['bad_answers'],
                 'good_answer': Questions[self.tail.index-1]['good_answer'],
                 }
-    
-    
+
+    def back(self):
+        if self.tail.index == 0:
+            return False
+        prevQ = self.tail.prevQuestion
+        self.tail = prevQ
+        print(self.tail.nextQuestion)
+        self.tail.nextQuestion = None
+        self.tail.prevQuestion = prevQ.prevQuestion
+        return {'question': self.tail.question, 'bad_answers': self.tail.bad_answers, 'good_answer': self.tail.good_answer}

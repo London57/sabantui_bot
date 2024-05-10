@@ -4,8 +4,8 @@ class QuestionNode:
         self.question = question
         self.bad_answers = bad_answers
         self.good_answer= good_answer
-        self.prevQuetion = prevNode
-        self.nextQuetion = nextNode
+        self.prevQuestion = prevNode
+        self.nextQuestion = nextNode
         self.index = index
         self.state = state
 
@@ -16,7 +16,7 @@ class QuestionNodeList:
     tail = None
 
     def insert_end(self, question, bad_answers, good_answer):
-        if self.tail is None:
+        if not self.tail:
             node = QuestionNode(
                 question, bad_answers, good_answer, prevNode=None, nextNode=None, index=0
             )
@@ -26,6 +26,6 @@ class QuestionNodeList:
             node = QuestionNode(
                 question, bad_answers, good_answer, prevNode=self.tail, nextNode=None, index=self.tail.index + 1
             )
-            self.tail.nextQuetion = node
+            self.tail.nextQuestion = node
             self.tail = node
         return {'question': node.question, 'bad_answers': node.bad_answers, 'good_answer': node.good_answer}

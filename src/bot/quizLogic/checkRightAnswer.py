@@ -4,11 +4,9 @@ QuestionsState = dict()
 
 
 def check_right_answer(message, question, Qlist: QuestionNodeList):
-    print(question['good_answer'])
-    if message == question['good_answer']:
-        Qlist.tail.prevQuetion.state = 1
+    if message.text == question['good_answer']:
+        Qlist.tail.prevQuestion.state = 1
     else:
-        Qlist.tail.prevQuetion.state = 0
-
-    QuestionsState[Qlist.tail.prevQuetion] = Qlist.tail.prevQuetion.state
+        Qlist.tail.prevQuestion.state = 0
+    QuestionsState[Qlist.tail.prevQuestion.question] = Qlist.tail.prevQuestion.state
     return QuestionsState
