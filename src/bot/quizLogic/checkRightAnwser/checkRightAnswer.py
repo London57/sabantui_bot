@@ -1,4 +1,4 @@
-from .quetionNodeList import QuestionNodeList
+from src.bot.quizLogic.quetionNodeList import QuestionNodeList
 
 QuestionsState = dict()
 
