@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+sabantui_bot/g.py
+sabantui_ssh_key
+sabantui_ssh_key.pub
+g.py
