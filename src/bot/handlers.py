@@ -7,10 +7,7 @@ from .quizLogic.quetionList import QuestionList
 from .state import States
 from .keyboards import get_quiz_kbd
 
-
 dp = Dispatcher()
-
-questionList = QuestionList()
 
 
 @dp.message(CommandStart())
@@ -20,35 +17,51 @@ async def start(message: Message):
 
 @dp.message(Command('quiz'))
 async def start_quiz(message: Message, state: FSMContext):
+    global questionList
+    questionList = QuestionList()
     await state.set_state(States.Quiz)
     await quiz(message, state)
 
 
 @dp.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
-async def return_to_before_question(message, state):
-    question = questionList.back()
+async def return_to_before_question(message: Message, state: FSMContext):
+    question, indexQuestion = questionList.back()
     await message.answer(
-        question.question,
+        f"{indexQuestion}. {question.question}",
         reply_markup=get_quiz_kbd(question, questionList.tail.index),
     )
+
+
+@dp.message(and_f(StateFilter(States.Quiz)), F.text == 'Выйти из квиза')
+async def quit_quiz(message: Message, state: FSMContext):
+    await message.answer('Вы покинули квиз', reply_markup=ReplyKeyboardRemove())
+    await state.clear()
 
 
 @dp.message(and_f(StateFilter(States.Quiz), F.text))
 async def quiz(message: Message, state: FSMContext):
     # проверка выбора ответа из предложенных
+    # если ответ не из преложенных, возвращаемся, а затем идём вперёд
     if questionList.tail and message.text not in questionList.tail.answers:
-        await message.answer('Вы должны выбрать вариант ответы из предложенных!')
-        questionList.back()
+        await message.answer('Вы должны выбрать вариант ответа из предложенных!')
+        if questionList.tail.index == 0:
+            questionList.tail = None
+            questionList.head = None
+        else:
+            questionList.back()
+
     try:
-        question, questionBefore = questionList.next()
+        question, questionBefore, indexQuestion = questionList.next()
+    # если следующего вопроса нет
     except TypeError:
         question = False
-    if question:
+        questionList.check_last_answer(message)
 
-        # if questionList.tail.index > 0:
-        # print(check_right_answer(message, questionBefore))
+    if question:
+        if questionList.tail.index > 0:
+            questionList.check_right_answer(message, questionBefore)
         await message.answer(
-            question.question,
+            f"{indexQuestion}. {question.question}",
             reply_markup=get_quiz_kbd(question, questionList.tail.index),
         )
     else:
@@ -56,5 +69,7 @@ async def quiz(message: Message, state: FSMContext):
 
 
 async def end_quiz(message: Message, state: FSMContext):
-    await message.answer('Вы успешно прошли квиз!', reply_markup=ReplyKeyboardRemove())
+    right_answers = questionList.count_right_answers()
+    await message.answer(f'Вы успешно прошли квиз! Правильных ответов: {right_answers}',
+                         reply_markup=ReplyKeyboardRemove())
     await state.clear()

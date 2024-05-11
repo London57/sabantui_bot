@@ -15,9 +15,19 @@ def get_quiz_kbd(question: Question, QuestionList_tail_index):
             KeyboardButton(text=quiz_list[1]),
         ],
         [
-            KeyboardButton(text=quiz_list[2])
+            KeyboardButton(text=quiz_list[2]),
+        ],
+        [
+            KeyboardButton(text='Выйти из квиза'),
         ],
     ], resize_keyboard=True)
     if QuestionList_tail_index > 0:
-        kbd_markup.keyboard.append([KeyboardButton(text='Вернуться к предыдущему вопросу')])
+        kbd_markup.keyboard[3] = [
+                KeyboardButton(text='Вернуться к предыдущему вопросу'),
+            ]
+        kbd_markup.keyboard.append(
+            [
+                KeyboardButton(text='Выйти из квиза'),
+            ]
+        )
     return kbd_markup

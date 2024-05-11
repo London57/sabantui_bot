@@ -17,7 +17,7 @@ class QuestionNode(Question):
     prevQuestion: "QuestionNode"
     nextQuestion: "QuestionNode"
     index: int
-    state: bool = None
+    status: int = None
     # правильный или нет
 
     def __post_init__(self):
