@@ -1,12 +1,13 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from random import shuffle
+from .quizLogic.types import Question
 
 
-def get_quiz_kbd(quiz_dict: dict):
-    quiz_list = [quiz_dict['bad_answers'][0], quiz_dict['bad_answers'][1], quiz_dict['good_answer']]
+def get_quiz_kbd(question: Question, QuestionList_tail_index):
+    quiz_list = [question.bad_answers[0], question.bad_answers[1], question.good_answer]
     shuffle(quiz_list)
-    
-    return ReplyKeyboardMarkup(keyboard=[
+
+    kbd_markup = ReplyKeyboardMarkup(keyboard=[
         [
             KeyboardButton(text=quiz_list[0]),
         ],
@@ -14,6 +15,19 @@ def get_quiz_kbd(quiz_dict: dict):
             KeyboardButton(text=quiz_list[1]),
         ],
         [
-            KeyboardButton(text=quiz_list[2])
-        ]
+            KeyboardButton(text=quiz_list[2]),
+        ],
+        [
+            KeyboardButton(text='Выйти из квиза'),
+        ],
     ], resize_keyboard=True)
+    if QuestionList_tail_index > 0:
+        kbd_markup.keyboard[3] = [
+                KeyboardButton(text='Вернуться к предыдущему вопросу'),
+            ]
+        kbd_markup.keyboard.append(
+            [
+                KeyboardButton(text='Выйти из квиза'),
+            ]
+        )
+    return kbd_markup
