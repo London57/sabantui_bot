@@ -3,6 +3,18 @@ from random import shuffle
 from .quizLogic.types import Question
 
 
+def get_accept_to_quiz_kbd():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="да"),
+            ],
+            [
+                KeyboardButton(text="отмена"),
+            ],
+        ], resize_keyboard=True
+    )
+
 def get_quiz_kbd(question: Question, QuestionList_tail_index):
     quiz_list = [question.bad_answers[0], question.bad_answers[1], question.good_answer]
     shuffle(quiz_list)

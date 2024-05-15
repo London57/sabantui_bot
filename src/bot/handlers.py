@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.types import ReplyKeyboardRemove
 from .quizLogic.quetionList import QuestionList
 from .state import States
-from .keyboards import get_quiz_kbd
+from .keyboards import get_quiz_kbd, get_accept_to_quiz_kbd
 
 
 dp = Dispatcher()
@@ -15,12 +15,26 @@ dp = Dispatcher()
 async def start(message: Message):
     return message.answer('start')
 
-@dp.message(Command('quiz'))
+@dp.message(and_f(Command('quiz')), StateFilter(None))
 async def start_quiz(message: Message, state: FSMContext):
+    await state.set_state(States.PreQuiz)
+    await message.answer('''Квиз можно будет проходит неограниченое число раз.\
+                         Но в таблице лидеров будет результат первого прохождения.\
+                         Вы уверены, что готовы? Если нет, то нажмите кнопку "отмена"''',
+                         reply_markup=get_accept_to_quiz_kbd())
+
+
+@dp.message(and_f(StateFilter(States.PreQuiz)), F.text)
+async def pre_quiz(message: Message, state: FSMContext):
     global questionList
     questionList = QuestionList()
-    await state.set_state(States.Quiz)
-    await quiz(message, state)
+    if message.text not in ("да", "отмена"):
+        await start_quiz(message, state)
+    elif message.text == 'отмена':
+        await quit_quiz(message, state)
+    else:
+        await state.set_state(States.Quiz)
+        await quiz(message, state)
 
 
 @dp.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')

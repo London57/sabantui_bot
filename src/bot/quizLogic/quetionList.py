@@ -56,7 +56,7 @@ class QuestionList(QuestionNodeList):
     def count_right_answers(self):
         counter = self.head.status
         this = self.head
-        for i in range(self.tail.index):
+        for _ in range(self.tail.index):
             this = this.nextQuestion
             counter += this.status
         return counter
