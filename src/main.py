@@ -1,7 +1,8 @@
-from bot.bot import bot
+from bot.mvc.controllers.bot import bot
 import asyncio
-from bot.handlers import dp
-from bot.commands import Commands
+from bot.mvc.controllers.handlers import dp
+from bot.mvc.views.commands import Commands
+from bot.mvc.models.db.init_db import init_db
 from aiogram.types import BotCommandScopeAllPrivateChats
 
 ALLOWED_UPDATES = ['message']
@@ -14,4 +15,17 @@ async def main():
 
 
 if __name__ == '__main__':
+    init_db()
     asyncio.run(main())
+
+
+
+
+
+
+
+
+
+
+
+ 
