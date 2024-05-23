@@ -97,12 +97,16 @@ async def end_quiz(message: Message, state: FSMContext):
     print(time)
     if not repo.check_quiz(message.from_user.id):
         repo.insert(message.from_user.id, message.from_user.username, right_answers_c, bad_answers_c, time)
-    await message.answer(f'Вы успешно прошли квиз! Правильных ответов: {right_answers_c}',
+    await message.answer(f'\U00002705 Вы успешно прошли квиз! Правильных ответов: {right_answers_c}',
                          reply_markup=ReplyKeyboardRemove())
     await state.clear()
 
 
 @dp.message(and_f(Command('leaders'), StateFilter(None)))
-async def get_leaders(message: Message, state):
+async def get_leaders(message: Message):
     data = repo.select()
-    await message.answer(leaders_quiz(data))
+    if not data:
+        await message.answer('Ещё никто не прошёл квиз')
+    else:
+        data.reverse()
+        await message.answer(leaders_quiz(data))

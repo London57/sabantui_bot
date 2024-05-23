@@ -29,7 +29,6 @@ class QuizRepository:
             ORDER BY {self.db.table.good_answ_field}, {self.db.table.date_field}
         ''')
         data = cursor.fetchall()
-        print(data)
         return self.select_leaders_list(data)
     
     def select_leaders_list(self, l):
