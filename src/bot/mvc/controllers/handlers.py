@@ -10,6 +10,7 @@ from ..models.db.repositories import QuizRepositoryService
 from ..models.db.init_db import create_db_model
 from ..views.keyboards import get_accept_to_quiz_kbd, get_quiz_kbd
 from ..views.quiz_start import quiz_start_message
+from ..views.leaders_quiz import leaders_quiz
 
 
 dp = Dispatcher()
@@ -104,5 +105,4 @@ async def end_quiz(message: Message, state: FSMContext):
 @dp.message(and_f(Command('leaders'), StateFilter(None)))
 async def get_leaders(message: Message, state):
     data = repo.select()
-    data.reverse()
-    await message.answer(str(data))
+    await message.answer(leaders_quiz(data))

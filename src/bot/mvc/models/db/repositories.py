@@ -23,23 +23,20 @@ class QuizRepository:
     def _select(self, cursor: Cursor):
         cursor.execute(f'''
             SELECT {self.db.table.user_username_field},
-            {self.db.table.good_answ_field} 
+            {self.db.table.good_answ_field},
             {self.db.table.date_field}
             FROM {self.db.table.name}
             ORDER BY {self.db.table.good_answ_field}, {self.db.table.date_field}
         ''')
         data = cursor.fetchall()
+        print(data)
         return self.select_leaders_list(data)
     
     def select_leaders_list(self, l):
+        print(l)
         r_l = []
         for i in l:
             r_l.append([*i])
-            print(i, *i)
-        for i in r_l:
-            print(i)
-
-        print(r_l)
         return r_l
 
     @connect_db
