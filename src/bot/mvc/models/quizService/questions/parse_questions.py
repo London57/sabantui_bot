@@ -20,5 +20,5 @@ def get_questions(result_list=[]):
     return result_list
 
 
-Questions = get_questions()
+Questions: list[Question] = get_questions()
 shuffle(Questions)

@@ -1,7 +1,8 @@
 from .config import (
     database_name,
     table_name,
-    user_field,
+    user_id_field,
+    user_username_field,
     good_answ_field,
     bad_answ_field,
     date_field,
@@ -14,7 +15,8 @@ def init_db() -> None:
     query_create_db = (f'''
                 CREATE TABLE IF NOT EXISTS {table_name} (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    {user_field} TEXT NOT NULL,
+                    {user_id_field} INTEGER NOT NULL,
+                    {user_username_field} TEXT NOT NULL,
                     {good_answ_field} INTEGER NOT NULL,
                     {bad_answ_field} INTEGER NOT NULL,
                     {date_field} TIMESTAMP)

@@ -14,7 +14,6 @@ from ..views.quiz_start import quiz_start_message
 
 dp = Dispatcher()
 repo = QuizRepositoryService(create_db_model())
-questionList = QuestionList()
 
 
 @dp.message(CommandStart())
@@ -23,6 +22,8 @@ async def start(message: Message):
 
 @dp.message(and_f(Command('quiz')), StateFilter(None))
 async def start_quiz(message: Message, state: FSMContext):
+    global questionList
+    questionList = QuestionList()
     await state.set_state(States.PreQuiz)
     await message.answer(
         quiz_start_message,
@@ -47,6 +48,7 @@ async def quit_quiz(message: Message, state: FSMContext):
         'Вы покинули квиз.',
         reply_markup=ReplyKeyboardRemove(),
         )
+    await state.clear()
 
 
 @dp.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
@@ -92,7 +94,15 @@ async def end_quiz(message: Message, state: FSMContext):
     stateData = await state.get_data()
     right_answers_c, bad_answers_c, time = questionList.get_data_for_bd(stateData.get('time_start'))
     print(time)
-    repo.insert(message.from_user.id, right_answers_c, bad_answers_c, time)
+    if not repo.check_quiz(message.from_user.id):
+        repo.insert(message.from_user.id, message.from_user.username, right_answers_c, bad_answers_c, time)
     await message.answer(f'Вы успешно прошли квиз! Правильных ответов: {right_answers_c}',
                          reply_markup=ReplyKeyboardRemove())
     await state.clear()
+
+
+@dp.message(and_f(Command('leaders'), StateFilter(None)))
+async def get_leaders(message: Message, state):
+    data = repo.select()
+    data.reverse()
+    await message.answer(str(data))

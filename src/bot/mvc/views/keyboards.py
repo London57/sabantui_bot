@@ -35,3 +35,4 @@ def get_quiz_kbd(question: Question, QuestionList_tail_index):
                 KeyboardButton(text='Вернуться к предыдущему вопросу'),
             ])
     return kbd_markup
+

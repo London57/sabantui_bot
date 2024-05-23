@@ -3,8 +3,8 @@ from .types import QuestionNode, Question
 
 class QuestionNodeList:
     # head - первый узел; tall - последний узел
-    head = None
-    tail = None
+    head: QuestionNode = None
+    tail: QuestionNode = None
 
     def insert_end(self, question, bad_answers, good_answer):
         if not self.tail:

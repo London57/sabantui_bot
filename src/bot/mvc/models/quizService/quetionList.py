@@ -1,7 +1,8 @@
 from .quetionNodeList import QuestionNodeList
 from .questions.parse_questions import Questions
-from .types import Question
+from .types import Question, QuestionNode
 from datetime import datetime
+from aiogram.types import Message
 
 
 class QuestionList(QuestionNodeList):
@@ -24,7 +25,7 @@ class QuestionList(QuestionNodeList):
 
         # если есть элементы, то берём вопрос по индексу последнего элемента в QuetionNodeList
         else:
-            question = Questions[self.tail.index + 1]
+            question: Question = Questions[self.tail.index + 1]
             return self.insert_end(
                 *question.attrs
             ), Questions[self.tail.index - 1], self.tail.index + 1
@@ -41,14 +42,13 @@ class QuestionList(QuestionNodeList):
         return Question(self.tail.question, self.tail.bad_answers,
                         self.tail.good_answer), self.tail.index + 1
 
-    def check_right_answer(self, message, question):
-        print(message.text, question.good_answer)
+    def check_right_answer(self, message: Message, question: Question):
         if message.text == question.good_answer:
             self.tail.prevQuestion.status = 1
         else:
             self.tail.prevQuestion.status = 0
 
-    def check_last_answer(self, message):
+    def check_last_answer(self, message: Message):
         if message.text == Questions[-1].good_answer:
             self.tail.status = 1
         else:
@@ -68,7 +68,7 @@ class QuestionList(QuestionNodeList):
         for _ in range(self.tail.index):
             this = this.nextQuestion
             good_answ_c += this.status
-        bad_answ_c = self.tail.index - good_answ_c
+        bad_answ_c = self.tail.index - good_answ_c + 1
         time = datetime.now() - start_quiz_time
 
-        return good_answ_c, bad_answ_c, time
+        return good_answ_c, bad_answ_c, str(time)
