@@ -3,3 +3,4 @@ __pycache__/
 sabantui_bot/g.py
 g.py
 .idea/
+sqlite3.db
