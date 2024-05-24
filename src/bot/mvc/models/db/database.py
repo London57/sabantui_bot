@@ -4,7 +4,7 @@ from .config import *
 
 
 @dataclass
-class Table:
+class QuizTable:
     name: str = table_name
     
     user_id_field: int = user_id_field
@@ -14,7 +14,7 @@ class Table:
     date_field: str = date_field
 
 @dataclass
-class DataBase:
+class QuizDataBase:
     name: str
-    table: Table = Table()
+    table: QuizTable = QuizTable()
 

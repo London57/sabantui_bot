@@ -3,7 +3,7 @@ from sqlite3 import (
     Cursor
 )
 from .config import database_name
-from .database import DataBase
+from .database import QuizDataBase
 
 
 def connect_db(func):
@@ -15,24 +15,26 @@ def connect_db(func):
     return wrapper
 
 
+
 class QuizRepository:
-    def __init__(self, db: DataBase):
+    def __init__(self, db: QuizDataBase):
         self.db = db
     
     @connect_db
-    def _select(self, cursor: Cursor):
+    def _select_leaders_quiz(self, cursor: Cursor):
         cursor.execute(f'''
             SELECT {self.db.table.user_username_field},
             {self.db.table.good_answ_field},
             {self.db.table.date_field}
             FROM {self.db.table.name}
-            ORDER BY {self.db.table.good_answ_field}, {self.db.table.date_field}
+            ORDER BY {self.db.table.good_answ_field}, {self.db.table.date_field} DESC
         ''')
         data = cursor.fetchall()
-        return self.select_leaders_list(data)
+        result_list = self.select_leaders_list(data)
+        result_list.reverse()
+        return result_list
     
     def select_leaders_list(self, l):
-        print(l)
         r_l = []
         for i in l:
             r_l.append([*i])
@@ -49,33 +51,24 @@ class QuizRepository:
              {self.db.table.date_field})
             VALUES (?, ?, ?, ?, ?)
         ''', (user_id, username, good_answ_c, bad_answ_c, time))
-        print('insert')
+        print('insert ', username)
+
 
     @connect_db
     def _check_quiz(self, cursor: Cursor, user_id: int):
         cursor.execute(f"""
-            SELECT {self.db.table.user_id_field}
+            SELECT {self.db.table.user_username_field},
+            {self.db.table.good_answ_field},
+            {self.db.table.date_field}
             FROM {self.db.table.name}
             WHERE {self.db.table.user_id_field} == {user_id}
         """)
-        
+
         data = cursor.fetchall()
-        return self.get_select_data(data)
-
-    def get_select_data(self, data):
-        print([self.replace_select_data(row) for row in data])
-        return [self.replace_select_data(row) for row in data]
-
-    def replace_select_data(self, data: tuple):
-        return str(data).replace("('",'').replace("',)", '')
+        print(data)
+        try:
+            return list(data[0])
+        except IndexError:
+            return 0
 
 
-class QuizRepositoryService(QuizRepository):
-    def select(self) -> list:
-        return self._select()
-    
-    def insert(self, user_id: int, username: str, good_answ_c: int, bad_anss_c: int, time):
-        return self._insert(user_id=user_id, username=username, good_answ_c=good_answ_c, bad_answ_c=bad_anss_c, time=time)
-    
-    def check_quiz(self, user_id: int):
-        return self._check_quiz(user_id=user_id)

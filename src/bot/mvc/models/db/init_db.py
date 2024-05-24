@@ -8,7 +8,7 @@ from .config import (
     date_field,
 )
 from sqlite3 import connect
-from .database import DataBase
+from .database import QuizDataBase
 
 
 def init_db() -> None:
@@ -16,7 +16,7 @@ def init_db() -> None:
                 CREATE TABLE IF NOT EXISTS {table_name} (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     {user_id_field} INTEGER NOT NULL,
-                    {user_username_field} TEXT NOT NULL,
+                    {user_username_field} TEXT NOT NULL UNIQUE,
                     {good_answ_field} INTEGER NOT NULL,
                     {bad_answ_field} INTEGER NOT NULL,
                     {date_field} TIMESTAMP)
@@ -28,7 +28,7 @@ def init_db() -> None:
         connection.commit()
 
 
-def create_db_model() -> DataBase:
-    return DataBase(
+def create_quiz_db_model() -> QuizDataBase:
+    return QuizDataBase(
         database_name,
     )

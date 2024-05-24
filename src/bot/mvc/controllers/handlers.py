@@ -6,20 +6,19 @@ from aiogram.types import Message
 from aiogram.types import ReplyKeyboardRemove
 from .state import States
 from ..models.quizService.quetionList import QuestionList
-from ..models.db.repositories import QuizRepositoryService
-from ..models.db.init_db import create_db_model
+from ..models.db.servises import QuizRepositoryService
+from ..models.db.init_db import create_quiz_db_model
 from ..views.keyboards import get_accept_to_quiz_kbd, get_quiz_kbd
-from ..views.quiz_start import quiz_start_message
-from ..views.leaders_quiz import leaders_quiz
+from ..views import leaders_quiz, quiz_start_message, user_quiz_info_response
 
 
 dp = Dispatcher()
-repo = QuizRepositoryService(create_db_model())
+repo = QuizRepositoryService(create_quiz_db_model())
 
 
 @dp.message(CommandStart())
 async def start(message: Message):
-    return message.answer('start')
+    return message.answer('По команде /quiz можете пройти квиз по Сабантую, но перед этим ознакомтесь с этим праздником по команде /info, если захотите посмотреть лидеров квиза, вам поможет команда /leaders')
 
 @dp.message(and_f(Command('quiz')), StateFilter(None))
 async def start_quiz(message: Message, state: FSMContext):
@@ -31,12 +30,16 @@ async def start_quiz(message: Message, state: FSMContext):
         reply_markup=get_accept_to_quiz_kbd()
         )
 
+@dp.message(Command('info'))
+async def info(message):
+    await message.answe('В разработке...')
+
 
 @dp.message(and_f(StateFilter(States.PreQuiz)), F.text)
 async def pre_quiz(message: Message, state: FSMContext):
-    if message.text not in ("да", "отмена"):
+    if message.text not in ("Да", "Отмена"):
         await start_quiz(message, state)
-    elif message.text == 'отмена':
+    elif message.text == 'Отмена':
         await quit_quiz(message, state)
     else:
         await state.set_state(States.Quiz)
@@ -94,7 +97,7 @@ async def quiz(message: Message, state: FSMContext):
 async def end_quiz(message: Message, state: FSMContext):
     stateData = await state.get_data()
     right_answers_c, bad_answers_c, time = questionList.get_data_for_bd(stateData.get('time_start'))
-    print(time)
+
     if not repo.check_quiz(message.from_user.id):
         repo.insert(message.from_user.id, message.from_user.username, right_answers_c, bad_answers_c, time)
     await message.answer(f'\U00002705 Вы успешно прошли квиз! Правильных ответов: {right_answers_c}',
@@ -104,9 +107,11 @@ async def end_quiz(message: Message, state: FSMContext):
 
 @dp.message(and_f(Command('leaders'), StateFilter(None)))
 async def get_leaders(message: Message):
-    data = repo.select()
+    data = repo.select_leaders_quiz()
     if not data:
         await message.answer('Ещё никто не прошёл квиз')
     else:
-        data.reverse()
         await message.answer(leaders_quiz(data))
+        info = user_quiz_info_response(repo.get_user_quiz_info(message.from_user.id))
+        if info:
+            await message.answer(info)

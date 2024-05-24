@@ -7,10 +7,10 @@ def get_accept_to_quiz_kbd():
     return ReplyKeyboardMarkup(
         keyboard=[
             [
-                KeyboardButton(text="да"),
+                KeyboardButton(text="Да"),
             ],
             [
-                KeyboardButton(text="отмена"),
+                KeyboardButton(text="Отмена"),
             ],
         ], resize_keyboard=True
     )
