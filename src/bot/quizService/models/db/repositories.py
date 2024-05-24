@@ -15,7 +15,6 @@ def connect_db(func):
     return wrapper
 
 
-
 class QuizRepository:
     def __init__(self, db: QuizDataBase):
         self.db = db
@@ -70,5 +69,4 @@ class QuizRepository:
             return list(data[0])
         except IndexError:
             return 0
-
 

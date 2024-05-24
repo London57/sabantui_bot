@@ -1,12 +1,16 @@
-from bot.mvc.controllers.bot import bot
+from bot import bot
 import asyncio
-from bot.mvc.controllers.handlers import dp
-from bot.mvc.views.commands import Commands
-from bot.mvc.models.db.init_db import init_db
+from aiogram import Dispatcher
+from bot.quizService.controllers.handlers import quiz
+from bot.commands import Commands
+from bot.quizService.models.db.init_db import init_db
 from aiogram.types import BotCommandScopeAllPrivateChats
 
 ALLOWED_UPDATES = ['message']
 
+
+dp = Dispatcher()
+dp.include_router(quiz)
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)

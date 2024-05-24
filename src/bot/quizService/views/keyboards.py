@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from random import shuffle
-from ..models.quizService.types import Question
+from ..models.quizLogic.types import Question
 
 
 def get_accept_to_quiz_kbd():

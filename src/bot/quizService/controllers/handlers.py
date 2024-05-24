@@ -1,41 +1,24 @@
 from datetime import datetime
-from aiogram import Dispatcher, F
+from aiogram import F
+from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import CommandStart, Command, StateFilter, and_f
 from aiogram.types import Message
 from aiogram.types import ReplyKeyboardRemove
 from .state import States
-from ..models.quizService.quetionList import QuestionList
+from ..models.quizLogic.quetionList import QuestionList
 from ..models.db.servises import QuizRepositoryService
 from ..models.db.init_db import create_quiz_db_model
 from ..views.keyboards import get_accept_to_quiz_kbd, get_quiz_kbd
 from ..views import leaders_quiz, quiz_start_message, user_quiz_info_response
 
 
-dp = Dispatcher()
 repo = QuizRepositoryService(create_quiz_db_model())
 
-
-@dp.message(CommandStart())
-async def start(message: Message):
-    return message.answer('По команде /quiz можете пройти квиз по Сабантую, но перед этим ознакомтесь с этим праздником по команде /info, если захотите посмотреть лидеров квиза, вам поможет команда /leaders')
-
-@dp.message(and_f(Command('quiz')), StateFilter(None))
-async def start_quiz(message: Message, state: FSMContext):
-    global questionList
-    questionList = QuestionList()
-    await state.set_state(States.PreQuiz)
-    await message.answer(
-        quiz_start_message,
-        reply_markup=get_accept_to_quiz_kbd()
-        )
-
-@dp.message(Command('info'))
-async def info(message):
-    await message.answe('В разработке...')
+quiz = Router()
 
 
-@dp.message(and_f(StateFilter(States.PreQuiz)), F.text)
+@quiz.message(and_f(StateFilter(States.PreQuiz)), F.text)
 async def pre_quiz(message: Message, state: FSMContext):
     if message.text not in ("Да", "Отмена"):
         await start_quiz(message, state)
@@ -54,8 +37,7 @@ async def quit_quiz(message: Message, state: FSMContext):
         )
     await state.clear()
 
-
-@dp.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
+@quiz.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
 async def return_to_before_question(message: Message, state: FSMContext):
     question, indexQuestion = questionList.back()
     await message.answer(
@@ -64,8 +46,8 @@ async def return_to_before_question(message: Message, state: FSMContext):
     )
 
 
-@dp.message(and_f(StateFilter(States.Quiz), F.text))
-async def quiz(message: Message, state: FSMContext):
+@quiz.message(and_f(StateFilter(States.Quiz), F.text))
+async def quiz_base(message: Message, state: FSMContext):
     # проверка выбора ответа из предложенных
     # если ответ не из преложенных, возвращаемся, а затем идём вперёд
     if questionList.tail and message.text not in questionList.tail.answers:
@@ -93,7 +75,6 @@ async def quiz(message: Message, state: FSMContext):
     else:
         await end_quiz(message, state)
 
-
 async def end_quiz(message: Message, state: FSMContext):
     stateData = await state.get_data()
     right_answers_c, bad_answers_c, time = questionList.get_data_for_bd(stateData.get('time_start'))
@@ -105,7 +86,7 @@ async def end_quiz(message: Message, state: FSMContext):
     await state.clear()
 
 
-@dp.message(and_f(Command('leaders'), StateFilter(None)))
+@quiz.message(and_f(Command('leaders'), StateFilter(None)))
 async def get_leaders(message: Message):
     data = repo.select_leaders_quiz()
     if not data:
@@ -115,3 +96,15 @@ async def get_leaders(message: Message):
         info = user_quiz_info_response(repo.get_user_quiz_info(message.from_user.id))
         if info:
             await message.answer(info)
+
+
+
+@quiz.message(and_f(Command('quiz')), StateFilter(None))
+async def start_quiz(message: Message, state: FSMContext):
+    global questionList
+    questionList = QuestionList()
+    await state.set_state(States.PreQuiz)
+    await message.answer(
+        quiz_start_message,
+        reply_markup=get_accept_to_quiz_kbd()
+        )
