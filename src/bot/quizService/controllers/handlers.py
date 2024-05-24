@@ -7,7 +7,7 @@ from aiogram.types import Message
 from aiogram.types import ReplyKeyboardRemove
 from .state import States
 from ..models.quizLogic.quetionList import QuestionList
-from ..models.db.servises import QuizRepositoryService
+from ..models.db.repositoryServices import QuizRepositoryService
 from ..models.db.init_db import create_quiz_db_model
 from ..views.keyboards import get_accept_to_quiz_kbd, get_quiz_kbd
 from ..views import leaders_quiz, quiz_start_message, user_quiz_info_response

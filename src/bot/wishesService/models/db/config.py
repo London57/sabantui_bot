@@ -1,12 +1,10 @@
 
 database_name = 'sqlite3.db'
-table_name = 'Quiz_data'
+table_name = 'Wishes_data'
 
 user_id_field = 'user_id'
 user_username_field = 'user_username'
-good_answ_field = 'goood_answ_count'
-bad_answ_field = 'bad_answ_count'
+wishes_field = 'wishes'
 date_field = 'quiz_time'
-
 
 
