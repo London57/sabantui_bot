@@ -30,4 +30,94 @@
         <bad_answer>Кусок чак-чака</bad_answer>
         <good_answer>Монету</good_answer>
     </Question>
+    <Question>
+        <question>Выберите лишнее: В современных условиях праздник Сабантуй является общенациональным праздником татар, проживающих во всех регионах...</question>
+        <good_answer>Японии</good_answer>
+        <bad_answer>США</bad_answer>
+        <bad_answer>Австралии</bad_answer>
+    </Question>
+    <Question>
+        <question>Как зовут тюрки бога неба и солнца?</question>
+        <good_answer>Тенгре</good_answer>
+        <bad_answer>Шурале</bad_answer>
+        <bad_answer>Пери</bad_answer>
+    </Question>
+    <Question>
+        <question>Из скольки частей состоит Сабантуй?</question>
+        <good_answer>3</good_answer>
+        <bad_answer>2</bad_answer>
+        <bad_answer>4</bad_answer>
+    </Question>
+    <Question>
+        <question>Всавьте пропущеннное слово: коллективное угощение детей кашей, приготовленной из собранных продуктов</question>
+        <good_answer>Карга боткасы</good_answer>
+        <bad_answer>Яз боткасы</bad_answer>
+        <bad_answer>Кояш ризыгы</bad_answer>
+    </Question>
+    <Question>
+        <question>Завершающим череду досабантуевских обрядов является какой из обрядов?</question>
+        <good_answer>Сбор подарков для победителей</good_answer>
+        <bad_answer>Коллективное угощение детей кашей</bad_answer>
+        <bad_answer>Сбор детьми крашеных яиц</bad_answer>
+    </Question>
+    <Question>
+        <question>Как называется кульминация праздника?</question>
+        <good_answer>Майдан</good_answer>
+        <bad_answer>авыл көе</bad_answer>
+        <bad_answer>серен</bad_answer>
+    </Question>
+    <Question>
+        <question>Кто определяют день и место проведения дня состязаний?</question>
+        <good_answer>Старейшины сел</good_answer>
+        <bad_answer>Хозяйки</bad_answer>
+        <bad_answer>Никто (у них всегда закрепленное место и время)</bad_answer>
+    </Question>
+    <Question>
+        <question>Продолжите: Местом проведения Сабантуя обычно выбирают...</question>
+        <good_answer>Ровное поле</good_answer>
+        <bad_answer>берег возле реки</bad_answer>
+        <bad_answer>небольшой холм</bad_answer>
+    </Question>
+    <Question>
+        <question>Выберите лишнее: Кульминацией праздника - майдан состоит из комплекса разных состязаний. Это состязания в ...</question>
+        <good_answer>Уме</good_answer>
+        <bad_answer>Силе</bad_answer>
+        <bad_answer>Ловкости</bad_answer>
+    </Question>
+    <Question>
+        <question>Продолжите: Состязания начинаются с ...</question>
+        <good_answer>Скачек</good_answer>
+        <bad_answer>Бега</bad_answer>
+        <bad_answer>Борьбы</bad_answer>
+    </Question>
+    <Question>
+        <question>Что дарят победителю в скачках?</question>
+        <good_answer>Полотенце</good_answer>
+        <bad_answer>Шапку</bad_answer>
+        <bad_answer>Пряник в виде коня</bad_answer>
+    </Question>
+    <Question>
+        <question>В перетягивние каната участвуют сколько всего людей?</question>
+        <good_answer>18</good_answer>
+        <bad_answer>10</bad_answer>
+        <bad_answer>14</bad_answer>
+    </Question>
+    <Question>
+        <question>КӨРӘШ это</question>
+        <good_answer>борьба</good_answer>
+        <bad_answer>бег в мешках</bad_answer>
+        <bad_answer>прыжки в длину</bad_answer>
+    </Question>
+    <Question>
+        <question>Сколько метров нужно пробежать до финиша человеку с яйцом на ложке?</question>
+        <good_answer>100</good_answer>
+        <bad_answer>50</bad_answer>
+        <bad_answer>150</bad_answer>
+    </Question>
+    <Question>
+        <question>Как называлась последняя часть Сабантуя?</question>
+        <good_answer>Кичке уен</good_answer>
+        <bad_answer>яшь килен сөлгесе</bad_answer>
+        <bad_answer>бүләк җыю</bad_answer>
+    </Question>
 </questionTree>
