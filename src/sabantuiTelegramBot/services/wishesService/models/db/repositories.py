@@ -29,5 +29,4 @@ class WishesRepository:
              {self.db.table.date_field})
             VALUES (?, ?, ?, ?)
         ''', (user_id, username, wishes, time))
-        print('insert ', username)
 

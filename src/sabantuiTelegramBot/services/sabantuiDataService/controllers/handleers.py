@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command, StateFilter, and_f
 from aiogram.types import Message, ReplyKeyboardRemove
 from ..views.keyboards import get_start_kbd, get_competitions_kbd
-from ..models.messages import send_info, send_competitions
+from ..views.messages import send_info, send_competitions
 from ..models.categories import Categories, Competitions
 from .states import SabantuiDataStates
 
@@ -20,7 +20,7 @@ sabantui_data = Router()
 @sabantui_data.message(and_f(StateFilter(None), Command('info')))
 async def start_data(message: Message, state: FSMContext):
     await message.answer(
-        'Нажимайте на кнопки и просматривайте инфонрмацию о Сабантуе',
+        'Нажимайте на кнопки и просматривайте информацию о Сабантуе',
         reply_markup=get_start_kbd()
         )
     await state.set_state(SabantuiDataStates.choose_category)

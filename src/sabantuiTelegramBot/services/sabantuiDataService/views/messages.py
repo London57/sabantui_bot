@@ -1,4 +1,4 @@
-from .categories import Categories, Competitions
+from ..models.categories import Categories, Competitions
 
 
 

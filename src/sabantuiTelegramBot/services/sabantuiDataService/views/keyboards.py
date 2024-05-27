@@ -1,6 +1,6 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
-from ..models.messages import Categories
+from .messages import Categories
 from ..models.categories import Competitions
 
 def get_start_kbd():

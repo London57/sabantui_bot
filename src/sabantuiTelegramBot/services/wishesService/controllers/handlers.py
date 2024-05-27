@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command, and_f
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import StateFilter
 from ..models.db.repositoryServices import WishesRepositoryService
@@ -28,5 +28,13 @@ async def start_wish(message: Message, state: FSMContext):
 async def wish_base(message: Message, state: FSMContext):
     if message.text != 'Отмена':
         repo.insert(message.from_user.id, message.from_user.username, message.text, datetime.now())
-        await message.answer('Успешно сохранено')
+        await message.answer(
+            'Успешно сохранено',
+            reply_markup=ReplyKeyboardRemove(),
+        )
+    else: 
+        await message.answer(
+            'Вы отменили действие.',
+            reply_markup=ReplyKeyboardRemove(),
+        )
     await state.clear()

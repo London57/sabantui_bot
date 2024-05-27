@@ -50,7 +50,6 @@ class QuizRepository:
              {self.db.table.date_field})
             VALUES (?, ?, ?, ?, ?)
         ''', (user_id, username, good_answ_c, bad_answ_c, time))
-        print('insert ', username)
 
 
     @connect_db

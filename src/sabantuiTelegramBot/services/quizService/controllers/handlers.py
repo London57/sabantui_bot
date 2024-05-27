@@ -15,10 +15,10 @@ from ..views import leaders_quiz, quiz_start_message, user_quiz_info_response
 
 repo = QuizRepositoryService(create_quiz_db_model())
 
-quiz = Router()
+quiz_router = Router()
 
 
-@quiz.message(and_f(StateFilter(States.PreQuiz)), F.text)
+@quiz_router.message(and_f(StateFilter(States.PreQuiz)), F.text)
 async def pre_quiz(message: Message, state: FSMContext):
     if message.text not in ("Да", "Отмена"):
         await start_quiz(message, state)
@@ -27,7 +27,7 @@ async def pre_quiz(message: Message, state: FSMContext):
     else:
         await state.set_state(States.Quiz)
         await state.set_data({'time_start': datetime.now()})
-        await quiz(message, state)
+        await quiz_base(message, state)
 
 
 async def quit_quiz(message: Message, state: FSMContext):
@@ -37,7 +37,7 @@ async def quit_quiz(message: Message, state: FSMContext):
         )
     await state.clear()
 
-@quiz.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
+@quiz_router.message(and_f(StateFilter(States.Quiz)), F.text == 'Вернуться к предыдущему вопросу')
 async def return_to_before_question(message: Message, state: FSMContext):
     question, indexQuestion = questionList.back()
     await message.answer(
@@ -46,7 +46,7 @@ async def return_to_before_question(message: Message, state: FSMContext):
     )
 
 
-@quiz.message(and_f(StateFilter(States.Quiz), F.text))
+@quiz_router.message(and_f(StateFilter(States.Quiz), F.text))
 async def quiz_base(message: Message, state: FSMContext):
     # проверка выбора ответа из предложенных
     # если ответ не из преложенных, возвращаемся, а затем идём вперёд
@@ -86,7 +86,7 @@ async def end_quiz(message: Message, state: FSMContext):
     await state.clear()
 
 
-@quiz.message(and_f(Command('leaders'), StateFilter(None)))
+@quiz_router.message(and_f(Command('leaders'), StateFilter(None)))
 async def get_leaders(message: Message):
     data = repo.select_leaders_quiz()
     if not data:
@@ -99,7 +99,7 @@ async def get_leaders(message: Message):
 
 
 
-@quiz.message(and_f(Command('quiz')), StateFilter(None))
+@quiz_router.message(and_f(Command('quiz')), StateFilter(None))
 async def start_quiz(message: Message, state: FSMContext):
     global questionList
     questionList = QuestionList()
