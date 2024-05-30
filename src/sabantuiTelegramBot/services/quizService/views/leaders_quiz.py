@@ -6,7 +6,10 @@ def leaders_quiz(data: list):
     
     """
     list_of_strings = []
-    for index in range(10):
+    c = len(data)
+    if c > 10:
+        c = 10
+    for index in range(c):
         list_of_strings.append(f"""{index + 1}. @{data[index][0]}\nПравильных ответов: {data[index][1]}\nВремя прохождения: {format_time_string(data[index][2])}\n\n""")
 
     return ''.join(list_of_strings)

@@ -17,19 +17,20 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def start(message):
-    return message.answer('По команде /quiz можете пройти квиз по Сабантую, но перед этим ознакомтесь с этим праздником по команде /info, если захотите посмотреть лидеров квиза, вам поможет команда /leaders')
+    return message.answer('По команде /quiz можете пройти квиз по Сабантую, но перед этим ознакомтесь с этим праздником по команде /info, если захотите посмотреть лидеров квиза, вам поможет команда /leaders. Так же можете написать свой отзыв о Сабантуе по команде /wish.')
 
 dp.include_routers(quiz_router, wishes, sabantui_data)
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     await bot.set_my_commands(commands=Commands, scope=BotCommandScopeAllPrivateChats())
-    await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
+    await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES, commans=Commands)
 
 
 if __name__ == '__main__':
     init_quiz_table()
     init_wishes_table()
+    print('start')
     asyncio.run(main())
 
 

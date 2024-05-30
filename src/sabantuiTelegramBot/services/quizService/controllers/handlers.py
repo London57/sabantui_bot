@@ -89,6 +89,7 @@ async def end_quiz(message: Message, state: FSMContext):
 @quiz_router.message(and_f(Command('leaders'), StateFilter(None)))
 async def get_leaders(message: Message):
     data = repo.select_leaders_quiz()
+    print(data)
     if not data:
         await message.answer('Ещё никто не прошёл квиз')
     else:

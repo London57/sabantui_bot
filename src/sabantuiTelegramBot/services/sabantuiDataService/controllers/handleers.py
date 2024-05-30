@@ -50,10 +50,7 @@ async def choose_category(message: Message, state: FSMContext):
         await state.set_state(SabantuiDataStates.competitions)
         return
     else:
-        data = *send_info(message.text),
-        await message.answer_photo(
-            photo = data[1],
-        )
+        data = send_info(message.text)
         await message.answer(data[0], parse_mode='Markdown')
     await state.clear()
     await start_data(message, state)
@@ -69,8 +66,5 @@ async def competitions(message: Message, state: FSMContext):
     elif message.text not in [competition['name'] for competition in Competitions.competitions]:
         await message.answer('Выберите только из предложенных состязаний!')
         return
-    data = *send_competitions(message.text),
-    await message.answer_photo(
-        photo = data[1],
-    )
+    data = send_competitions(message.text)
     await message.answer(data[0], parse_mode='Markdown')
